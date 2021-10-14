@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Servicio</title>
+</head>
+<body>
+{{ object.pk |json_script:"object.pk" }}
+
+
+</body>
+
+
+{% load static %}
+
+<script
+        src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+        crossorigin="anonymous"></script>
+<script>
+
+    $(document).ready(function () {
+        connect()
+        var notification = new Notification("Hi there!");
+        notification.function
+        function connect(){
+            try {
+
+                const idService = JSON.parse(document.getElementById('object.pk').textContent);
+                console.log(idService)
+
+
+                const chatSocket = new WebSocket(
+                    'ws://'
+                    + window.location.host
+                    + '/ws/file_socket/'
+                );
+
+
+                console.log("Socket Status: " + chatSocket.readyState);
+
+                chatSocket.onopen = function () {
+                    console.log('<p class="event">Socket Status: ' + chatSocket.readyState + ' (open)');
+                }
+
+                chatSocket.onmessage = function (msg) {
+                    data='<p class="message">Received: ' + msg.data +'</p>';
+                    $( "body" ).append(data)
+                }
+
+                chatSocket.onclose = function () {
+                    console.log('<p class="event">Socket Status: ' + chatSocket.readyState + ' (Closed)');
+                }
+
+            } catch (exception) {
+                console.log('<p>Error' + exception);
+            }
+        }
+
+    })
+
+</script>
+</html>

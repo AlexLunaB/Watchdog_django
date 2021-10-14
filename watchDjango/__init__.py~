@@ -1,0 +1,5 @@
+import signal
+
+from watchDjango import watchdogmon
+
+signal.signal(signal.SIGINT, watchdogmon.watchdog.shutdown)
